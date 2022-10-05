@@ -1,25 +1,45 @@
-// Assignment Code
-var generateBtn = document.querySelector("#generate");
-var lowAlph = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-var uppAlph = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-var specialCha =["!","@","#","$","%","%","^","&","*","(",")","-","_","=","+"];
-var numbers = ["1","2","3","4","5","6","7","8","9","0"];
-// Write password to the #password input
+//Homework post tutor and final answer
+//Responds to the click of the button
+document.querySelector('button').addEventListener('click', init);
 
-var howLong =  Math.floor(Math.Random * pwdLength) + 1;
-
-function writePassword() {
-  var pwdLength = window.prompt("How many long do you want your password (between 8-128 characters)");
-  window.confirm("Special Characters?");
-  window.confirm("Numbers?");
-  window.confirm("Upper Case?");
-  window.confirm("Lower Case?");
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
+//Makes a function asking for user input 
+function init() {
+  var pwdLength = prompt("How long do you want your password (between 8-128 characters)");
+//if password length comes back negative ends the cycle
+  if(!pwdLength) return;
+//ensures proper length requirements 
+  if(pwdLength<8) {
+    alert('Too Short!');
+    return init();
+  };
   
+  if(pwdLength>128){
+    alert("Too Long!");
+    return init();
+  };
+  // asks yes/no for password criteria
+  var num = confirm("Numbers?");
+  var lower = confirm("Lower Case?");
+  var upper = confirm("Upper Case?");
+  var special = confirm("Special Characters?");
+  var alpha = "abcdefghijklmnopqrstuvwxyz";
 
-  passwordText.value = password;
-}
+  // empty string to add values too
+  var temp = '';
+  var password = '';
+//conditionals to load temp with characters decided by user
+  if (lower) temp += alpha;
+  if (num) temp += '1234567890';
+  if (special) temp += '!@#$%^&*()-_=+';
+  
+  if (upper) temp += alpha.toUpperCase();
+//for loop putting it all together.
 
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+  for (let i = 0; i < pwdLength; i++) {
+    password += temp[Math.floor(Math.random() * temp.length)]
+  };
+  //displays password in textarea for user to see
+  document.querySelector("textarea").innerText = password;
+
+};
+
